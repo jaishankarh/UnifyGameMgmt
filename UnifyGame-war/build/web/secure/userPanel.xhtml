@@ -1,0 +1,257 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>USER PANEL</title>
+        <h:outputStylesheet name="header.css" library="css"/>
+    </h:head>
+    <h:body>
+        <div id="header">
+            <f:view>
+                <h:form>
+                    <p:growl id="messages" autoUpdate="true"/>  
+
+                    <div>
+                        <div id="header_left">
+                            <center>
+                                <p:graphicImage value="/resources/images/unify.png" title="UNIFY 2014" width="25%" />
+                            </center>
+                        </div>
+
+                        <div id="header_center">
+                            <center>    
+                                UNIFY 2014
+                            </center>
+                        </div>
+                        <div id="header_right">
+
+                            <p:clock></p:clock>
+                            <p:commandButton value="Logout" icon="ui-icon-logout" action="#{login.logout()}"/>
+                        </div>
+                    </div>  
+                </h:form>
+            </f:view>
+        </div>
+
+
+        <p:panel header="Welcome #{login.user.username},">
+
+
+            <p:tabView id="tabView">  
+
+                <p:tab id="tab_1" title="Players">  
+
+
+                    <p:panel id="panel_id" header="Players" style="margin-bottom:10px;">
+                        <f:view>
+                            <h:form> 
+                                
+                                <h:outputLabel for="create_id" value="Want to play?? Go ahead and ..."/>
+                                <p:commandButton id="create_id" value="Add Your Details!!" type="button" onclick="dlgp.show()" /> 
+                                <p:dialog id="dialog_id" header="Creating a Player..." widgetVar="dlgp" resizable="false">  
+                                    <ui:include src="/secure/Player/create.xhtml"/>
+                                    <p:commandButton value="Save!!" actionListener="#{playerCreate.save}" action="/secure/userPanel.xhtml" icon="ui-icon-disk" ajax="false" />    
+                                </p:dialog>  
+                                <p:dataTable var="player" rowIndexVar="id" value="#{playerView.players}">  
+                                    <p:column headerText="Name">  
+                                        <h:outputText value="#{player.name}" />  
+                                    </p:column>  
+
+                                    <p:column headerText="Height">  
+                                        <h:outputText value="#{player.height}" />  
+                                    </p:column>  
+
+                                    <p:column headerText="Weight">  
+                                        <h:outputText value="#{player.weight}" />  
+                                    </p:column>  
+                                    <p:column headerText="Teams">  
+                                        <h:outputText value="#{playerView.getTeams(id)}" />  
+                                    </p:column>
+
+                                    <p:column headerText="Statistics">  
+                                        <p:commandButton id="stats_id" value="View" type="button" /> 
+                                        <p:overlayPanel id="statsPanel" for="stats_id" hideEffect="fade" dynamic="true">  
+                                            <p:dataTable id="statstable" var="stat" value="#{playerView.getStatistics(id)}" rows="10" paginator="true">
+
+                                                <p:column headerText="Type">  
+                                                    <h:outputText value="#{stat.type}" />  
+                                                </p:column>  
+
+                                                <p:column headerText="Value">  
+                                                    <h:outputText value="#{stat.value}" />  
+                                                </p:column>  
+
+                                            </p:dataTable>  
+                                        </p:overlayPanel>  
+
+                                    </p:column> 
+
+
+                                </p:dataTable>  
+
+                            </h:form>  
+                        </f:view>
+                    </p:panel>
+
+
+
+                </p:tab>  
+
+                <p:tab id="tab_2" title="Teams">  
+
+
+                    <p:panel id="team_panel_id" header="Teams" style="margin-bottom:10px;">
+                        <f:view>
+                            <h:form> 
+<!--                                <p:growl id="messages_id_2"/>-->
+                                <h:outputLabel for="create_Teamid" value="Register your team and "/>
+                                <p:commandButton id="create_Teamid" value="Win Prizes!!" type="button" onclick="dlg.show()" /> 
+                                <p:dialog id="dialog" header="Add Team" widgetVar="dlg" resizable="false">  
+                                    <ui:include src="/secure/Team/create.xhtml"/>
+                                </p:dialog>  
+                                <p:dataTable var="team" rowIndexVar="id" value="#{teamView.allTeams}">  
+                                    <p:column headerText="Name">  
+                                        <h:outputText value="#{team.name}" />  
+                                    </p:column>  
+
+                                    <p:column headerText="Game">  
+                                        <h:outputText value="#{team.gameType}" />  
+                                    </p:column>
+                                    <p:column headerText="Players">  
+                                        <h:outputText value="#{teamView.getPlayers(id)}" />  
+                                    </p:column>
+
+                                </p:dataTable>  
+
+                            </h:form>  
+                        </f:view>
+                    </p:panel>
+
+
+
+                </p:tab>  
+
+                <p:tab id="tab_3" title="Schedule and Book Ticket">  
+                    <f:view>
+                        <h:form id="form">  
+
+<!--                            <p:growl id="messages" showDetail="true" />  -->
+
+                            <p:schedule id="schedule" value="#{scheduleController.eventModel}" widgetVar="myschedule">  
+
+                                <p:ajax event="dateSelect" listener="#{scheduleController.onDateSelect}" />  
+                                <p:ajax event="eventSelect" listener="#{scheduleController.onEventSelect}" update="eventDetails" oncomplete="eventDialog.show()" />  
+
+                            </p:schedule>  
+
+                            <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">  
+                                <h:panelGrid id="eventDetails" columns="2">  
+                                    <ui:include src="/secure/Event/display.xhtml"/>
+
+
+                                </h:panelGrid>  
+
+                                <h:commandButton value="Book Ticket" action="#{ticketCreate.create()}"/>
+
+                            </p:dialog>  
+
+                        </h:form>  
+                    </f:view>
+                </p:tab> 
+
+                <p:tab id="tab_4" title="Upcoming Matches">  
+                    <h:panelGrid columns="2" cellpadding="10">  
+                        <f:view>
+                            <h:form>
+                                <p:panel id="event_panel_id" header="Event" style="margin-bottom:10px;">
+<!--                                    <p:growl id="messages_id"/>-->
+
+
+
+                                    <p:dataTable var="event" rowIndexVar="id" value="#{eventView.upcomingEvents}">  
+                                        <p:column headerText="Date">  
+                                            <h:outputText value="#{event.dateTime}" />  
+                                        </p:column>  
+
+                                        <p:column headerText="Name">  
+                                            <h:outputText value="#{event.name}" />  
+                                        </p:column>  
+
+                                        <p:column headerText="Game">  
+                                            <h:outputText value="#{event.type}" />  
+                                        </p:column>
+
+                                        <p:column headerText="Date">  
+                                            <h:outputText value="#{event.round}" />  
+                                        </p:column> 
+
+                                        <p:column headerText="Team A">  
+                                            <h:outputText value="#{event.team1}" />  
+                                        </p:column>
+
+                                        <p:column headerText="Team B">  
+                                            <h:outputText value="#{event.team2}" />  
+                                        </p:column>
+
+                                        <p:column headerText="Venue">  
+                                            <h:outputText value="#{event.venue}" />  
+                                        </p:column>
+
+
+
+
+                                    </p:dataTable>  
+
+
+
+                                </p:panel>
+
+                            </h:form>
+                        </f:view>
+                    </h:panelGrid>  
+                </p:tab> 
+
+
+
+                <p:tab id="tab_5" title="My Tickets">  
+                    <p:panel id="ticket_panel_id" header="Tickets" style="margin-bottom:10px;">
+                        <f:view>
+                            <h:form> 
+<!--                                <p:growl id="messages_id_2"/>-->
+                                
+                                <p:dataTable var="ticket" rowIndexVar="id" value="#{ticketView.allTickets}">  
+                                    <p:column headerText="Id">  
+                                        <h:outputText value="#{ticket.id}" />  
+                                    </p:column>  
+                                    <p:column headerText="Event">  
+                                        <h:outputText value="#{ticket.event.name}" />  
+                                    </p:column>  
+
+                                    <p:column headerText="User Name">  
+                                        <h:outputText value="#{ticket.user.username}" />  
+                                    </p:column>
+                                    
+                                    <p:column headerText="Venue">  
+                                        <h:outputText value="#{ticket.event.venue}" />  
+                                    </p:column>
+                                    <p:column headerText="Game">  
+                                        <h:outputText value="#{ticket.event.type}" />  
+                                    </p:column>
+
+                                </p:dataTable>  
+
+                            </h:form>  
+                        </f:view>
+                    </p:panel>
+                </p:tab>  
+
+            </p:tabView> 
+        </p:panel>
+
+    </h:body>
+</html>
+

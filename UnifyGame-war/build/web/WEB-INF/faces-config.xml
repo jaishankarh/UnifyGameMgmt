@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.2"
+    xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+    <navigation-rule>
+        <from-view-id>/Login/login.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/home.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/index.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/index.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>viewPlayers</from-outcome>
+            <to-view-id>/secure/Player/view.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>viewUsers</from-outcome>
+            <to-view-id>/secure/User/view.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>viewEvents</from-outcome>
+            <to-view-id>/secure/Event/view.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>viewTeams</from-outcome>
+            <to-view-id>/secure/Team/view.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>viewSchedule</from-outcome>
+            <to-view-id>/secure/Event/schedule.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>logout</from-outcome>
+            <to-view-id>/index.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    
+    <application>
+        <resource-bundle>
+            <base-name>/Bundle</base-name>
+            <var>bundle</var>
+        </resource-bundle>
+    </application>
+    <navigation-rule>
+        <from-view-id>/anonymousHome.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>failure</from-outcome>
+            <to-view-id>/anonymousHome.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/index.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>admin</from-outcome>
+            <to-view-id>/secure/adminTemplate.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>user</from-outcome>
+            <to-view-id>/secure/userPanel.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+</faces-config>

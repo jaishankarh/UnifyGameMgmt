@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+   <ui:composition>
+       
+            <h:form>
+        <p:panel id="panel_id" header="New Team" style="margin-bottom:10px;">
+<!--            <p:growl id="messages_id"/>-->
+            <p:panelGrid columns="3" >
+                
+                <p:outputLabel for="name_id" value="Team Name"/>
+                <p:inputText id="name_id" value="#{teamCreate.name}" required="true" requiredMessage="This is a required field!">
+                    
+                </p:inputText>
+                <p:message for="name_id"/>
+                
+                <h:outputText value="Event Type: " />  
+        <p:selectOneMenu value="#{teamCreate.eventType}">  
+            <f:selectItems value="#{eventView.eventTypes}"/>
+            
+        </p:selectOneMenu>  
+                
+                <p:selectCheckboxMenu value="#{teamCreate.selectedPlayers}" label="Players" filter="true" filterMatchMode="startsWith" panelStyle="width:220px">  
+                    <f:selectItems value="#{teamCreate.allPlayers}" />  
+                </p:selectCheckboxMenu>  
+  
+                <p:separator style="margin-bottom:10px"/>  
+  
+     
+                
+            </p:panelGrid>
+             
+        </p:panel>
+                <p:commandButton value="Save!!" action="#{teamCreate.save()}"  icon="ui-icon-disk" ajax="false" />    
+        </h:form>
+            
+       
+    </ui:composition>
+</html>
+

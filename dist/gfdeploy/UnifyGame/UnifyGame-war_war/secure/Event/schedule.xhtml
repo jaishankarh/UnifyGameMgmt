@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Schedule</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/secure/adminTemplate.xhtml">
+        <ui:define name="main_content">
+            <h:form id="form">  
+      
+<!--        <p:growl id="messages" showDetail="true" />  -->
+      
+        <p:schedule id="schedule" value="#{scheduleController.eventModel}" widgetVar="myschedule">  
+      
+            <p:ajax event="dateSelect" listener="#{scheduleController.onDateSelect}" update="eventDetails" oncomplete="eventDialog.show()" />  
+            <p:ajax event="eventSelect" listener="#{scheduleController.onEventSelect}" update="eventDetails" oncomplete="eventDialog.show()" />  
+        
+      
+        </p:schedule>  
+      
+        <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">  
+            <h:panelGrid id="eventDetails" columns="2">  
+                <ui:include src="./create.xhtml"/>
+                <p:commandButton id="addButton" value="Save" actionListener="#{eventCreate.save}" oncomplete="myschedule.update();eventDialog.hide();" action="./schedule.xhtml"/> 
+ 
+            </h:panelGrid>  
+        </p:dialog>  
+      
+    </h:form> 
+     </ui:define>
+    </ui:composition>
+    </h:body>
+</html>
+

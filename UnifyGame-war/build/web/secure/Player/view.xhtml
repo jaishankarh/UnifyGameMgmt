@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/secure/adminTemplate.xhtml">
+        <ui:define name="main_content">
+            <h:form>
+        <p:panel id="panel_id" header="Players" style="margin-bottom:10px;">
+            <p:growl id="messages_id"/>
+            <h:form> 
+                <p:commandButton id="create_id" value="Add Player" type="button" onclick="dlg.show()" /> 
+                <p:dialog id="dialog" header="Add Player" widgetVar="dlg" resizable="false">  
+                    <ui:include src="./create.xhtml"/>
+                </p:dialog>  
+                <p:dataTable var="player" rowIndexVar="id" value="#{playerView.players}">  
+                    <p:column headerText="Name">  
+                        <h:outputText value="#{player.name}" />  
+                    </p:column>  
+
+                    <p:column headerText="Height">  
+                        <h:outputText value="#{player.height}" />  
+                    </p:column>  
+
+                    <p:column headerText="Weight">  
+                        <h:outputText value="#{player.weight}" />  
+                    </p:column>  
+                    <p:column headerText="Teams">  
+                        <h:outputText value="#{playerView.getTeams(id)}" />  
+                    </p:column>
+                  
+                    <p:column headerText="Statistics">  
+                        <p:commandButton id="stats_id" value="View" type="button" /> 
+                        <p:overlayPanel id="statsPanel" for="stats_id" hideEffect="fade" dynamic="true">  
+                        <p:dataTable id="statstable" var="stat" value="#{playerView.getStatistics(id)}" rows="10" paginator="true">
+                        
+                            <p:column headerText="Type">  
+                                <h:outputText value="#{stat.type}" />  
+                            </p:column>  
+
+                            <p:column headerText="Value">  
+                                <h:outputText value="#{stat.value}" />  
+                            </p:column>  
+
+                        </p:dataTable>  
+                    </p:overlayPanel>  
+                        <p:commandButton id="statsadd_id" value="Add" type="button" onclick="dlgStat.show()" actionListener="#{playerView.showStats}" ajax="true" update="statse_id" >
+                           
+                        </p:commandButton> 
+                        <p:dialog id="statse_id" header="Add Stat" widgetVar="dlgStat" resizable="false" rendered="#{playerView.statsRender}"> 
+                            <p:panelGrid columns="3">
+                                <p:outputLabel for="statsType_id" value="Type"/>
+                                <p:inputText id="statsType_id" value="#{playerCreate.statType}" required="true" requiredMessage="This is a required field!"/>
+                                <p:message for="statsType_id"/>
+
+                                <p:outputLabel for="statsValue_id" value="Value"/>
+                                <p:inputText id="statsValue_id" value="#{playerCreate.statValue}" required="true" requiredMessage="This is a required field!"/>
+
+                                <p:message for="statsType_id"/>
+                            </p:panelGrid>
+                            <p:commandButton id="statsSave_id" value="Save" type="button" action="#{playerCreate.statisticsSave(id)}"/> 
+                        </p:dialog> 
+                    </p:column> 
+                    <p:column headerText="Edit">  
+                        <p:commandButton id="update_id" value="Edit" type="button" actionListener="#{playerView.setEdit}" onclick="editDlg.show()"/> 
+                        <p:dialog id="dialog" header="Edit Player" widgetVar="editDlg" resizable="false">  
+                            <ui:include src="./create.xhtml"/>
+                        </p:dialog> 
+                    </p:column>
+                    <p:column headerText="Delete">  
+                        <p:commandButton id="delete_id" value="Delete" type="button" /> 
+                    </p:column>
+                     
+                </p:dataTable>  
+                
+            </h:form>  
+        </p:panel>
+                
+        </h:form>
+            
+        </ui:define>
+    </ui:composition>
+</html>
+

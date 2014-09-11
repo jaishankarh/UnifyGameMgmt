@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Login</title>
+        <h:outputStylesheet library="css" name="foundation/foundation.min.css"/>
+    </h:head>
+    <h:body>
+        <div class="row" style="background-color: #baeeff;height: 80px;">
+            <p:messages id="messages_id" closable="true" autoUpdate="true"/>
+        </div>
+        <div id="topbar" class="row" style="background-color: #272727;height: 40px;">
+            
+        </div>
+        <div id="content" class="row" style="background-color: #baeeff;">
+            <h:form>
+                
+                <div class="row">
+                    <div class="small-8">
+                      <div class="row">
+                        <div class="small-3 columns">
+                          <label for="right-label" class="right inline">Username</label>
+                        </div>
+                          <div class="small-9 columns" style="font-size:2em">
+                              <p:inputText  id="username_id" value="#{login.username}" required="true" label="Username" />
+                        </div>
+                      </div>
+                    </div>
+                 </div>
+                <div class="row">
+                    <div class="small-8">
+                      <div class="row">
+                        <div class="small-3 columns">
+                          <label for="right-label" class="right inline">Password</label>
+                        </div>
+                        <div class="small-9 columns">
+                            <p:password id="password_id" value="#{login.password}" required="true" label="Password">
+<!--                                <f:validator validatorId="loginUserValidator"/>-->
+                            </p:password>
+                        </div>
+                      </div>
+                    </div>
+                 </div>
+                <div class="row">
+                    <div class="small-12 small-centered columns">
+                        <h:commandButton action="#{login.loginUser()}" value="Login" styleClass="button small-4"></h:commandButton>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+        
+    </h:body>
+</html>
+

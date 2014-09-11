@@ -1,0 +1,18 @@
+
+
+@font-face
+{
+font-family: myFirstFont;
+/*src: url("http://localhost:8080/UnifyGame-war/resources/fonts/BebasNeue Bold.ttf");*/
+src: url("#{resource['fonts:waltographUI.ttf']}");
+}
+#header center{
+    font-family: myFirstFont;
+    font-size: 3em;
+    color: #f08a24;
+}
+#header{
+    background-image: url("#{resource['images:circles.jpg']}");
+    
+}
+

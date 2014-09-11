@@ -1,0 +1,216 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package mbeans.Event;
+
+import dbEntities.Event;
+import dbEntities.Team;
+import dbUtils.EventType;
+import dbUtils.RoundType;
+import entitySessionBeans.EventSessionBean;
+import entitySessionBeans.TeamSessionBean;
+import java.util.Date;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+import mbeans.EditInfo;
+
+/**
+ *
+ * @author jaishankar
+ */
+@ManagedBean
+@RequestScoped
+public class EventEdit {
+    @EJB
+    private EventSessionBean eventSessionBean;
+    @EJB
+    private TeamSessionBean teamSessionBean;
+    
+
+    @ManagedProperty(value="#{editInfo}")
+    private EditInfo editInfo;
+    
+    private String name;
+    
+    private String team1;
+    
+    private String team2;
+
+    private String venue;
+
+    private int round;
+    
+    private int eventType;
+    
+    private Date dateTime;
+    
+    private List<Team> allTeams;
+    
+    private List<Team> allTeams1;
+    
+    private List<Team> allTeams2;
+
+    public void setEditInfo(EditInfo editInfo) {
+        this.editInfo = editInfo;
+    }
+
+   
+    
+    public List<Team> getAllTeams2() {
+        return allTeams2;
+    }
+
+    public void setAllTeams2(List<Team> allTeams2) {
+        this.allTeams2 = allTeams2;
+    }
+
+    
+
+
+    public List<Team> getAllTeams1() {
+        return allTeams1;
+    }
+
+    public void setAllTeams1(List<Team> allTeams1) {
+        this.allTeams1 = allTeams1;
+    }
+    
+    public List<Team> getAllTeams() {
+        return allTeams;
+    }
+
+    public void getTeams(AjaxBehaviorEvent abe) {
+        allTeams = teamSessionBean.getAllTeams();
+        int s = allTeams.size();
+        int s1 = (int) Math.floor((double)s/2);
+        
+        
+        allTeams1 = allTeams.subList(0, s1);
+        allTeams2 = allTeams.subList(s1, s);
+        
+    }
+
+    public void setAllTeams(List<Team> allTeams) {
+        this.allTeams = allTeams;
+    }
+
+
+    public Date getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(Date dateTime) {
+        this.dateTime = dateTime;
+    }
+
+
+    public int getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(int eventType) {
+        this.eventType = eventType;
+    }
+
+
+    public int getRound() {
+        return round;
+    }
+
+    public void setRound(int round) {
+        this.round = round;
+    }
+
+    public String getVenue() {
+        return venue;
+    }
+
+    public void setVenue(String venue) {
+        this.venue = venue;
+    }
+
+    public String getTeam2() {
+        return team2;
+    }
+
+    public void setTeam2(String team2) {
+        this.team2 = team2;
+    }
+
+
+    public String getTeam1() {
+        return team1;
+    }
+
+    public void setTeam1(String team1) {
+        this.team1 = team1;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    
+    
+    public Team getSelectedTeam(String team)
+    {
+        for(Team t : allTeams)
+        {
+            if(t.getName().equals(team))
+            {
+                return t;
+            }
+        }
+        return null;
+    }
+    
+    public String save()
+    {
+        Team t1 = getSelectedTeam(team1);
+        Team t2 = getSelectedTeam(team2);
+        System.out.println(t1);
+        System.out.println(t2);
+        if(eventSessionBean.createEvent(name, t1, t2, venue, EventType.get(eventType), RoundType.get(round),dateTime))
+        {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.addMessage(null, new FacesMessage("Event creation successful!!"));
+            return null;
+        }
+        FacesContext fc = FacesContext.getCurrentInstance();
+        fc.addMessage(null, new FacesMessage("Event creation failed. Unexpected Server Error!!"));
+        return null;
+    }
+    
+    @PostConstruct
+    public void initial()
+    {
+        Long id = this.editInfo.getEventEdit();
+        if(id!=null)
+            System.out.println(id);
+//        Event e = eventSessionBean.findById(id);
+//        allTeams = teamSessionBean.getAllTeams();
+//        int s = allTeams.size();
+//        int s1 = (int) Math.floor((double)s/2);
+//        
+//        
+//        allTeams1 = allTeams.subList(0, s1);
+//        allTeams2 = allTeams.subList(s1, s);
+        
+    }
+    
+}

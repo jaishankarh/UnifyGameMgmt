@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+   <ui:composition template="/secure/adminTemplate.xhtml">
+        <ui:define name="main_content">
+            <h:form>
+        <p:panel id="panel_id" header="Teams" style="margin-bottom:10px;">
+            <p:growl id="messages_id"/>
+            <h:form> 
+                <p:commandButton id="create_id" value="Add Team" type="button" onclick="dlg.show()" /> 
+                <p:dialog id="dialog" header="Add Team" widgetVar="dlg" resizable="false">  
+                    <ui:include src="./create.xhtml"/>
+                </p:dialog>  
+                <p:dataTable var="team" rowIndexVar="id" value="#{teamView.allTeams}">  
+                    <p:column headerText="Name">  
+                        <h:outputText value="#{team.name}" />  
+                    </p:column>  
+
+                    <p:column headerText="Game">  
+                        <h:outputText value="#{team.gameType}" />  
+                    </p:column>
+                    <p:column headerText="Players">  
+                        <h:outputText value="#{teamView.getPlayers(id)}" />  
+                    </p:column>
+
+                    <p:column headerText="Edit">  
+                        <p:commandButton id="update_id" value="Edit" type="button" /> 
+                    </p:column>
+                    <p:column headerText="Delete">  
+                        <p:commandButton id="delete_id" value="Delete" type="button" /> 
+                    </p:column>
+                     
+                </p:dataTable>  
+                
+            </h:form>  
+        </p:panel>
+                
+        </h:form>
+            
+        </ui:define>
+    </ui:composition>
+</html>
+

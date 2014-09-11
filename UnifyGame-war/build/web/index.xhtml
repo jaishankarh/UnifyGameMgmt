@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Welcome to Unify</title>
+        <style>
+            
+        </style>
+        <h:outputStylesheet name="header.css" library="css"/>
+    </h:head>
+    <h:body>
+         <div id="header">
+                
+                    <h:form>
+                        <p:growl id="messages" autoUpdate="true"/>  
+
+                        <div>
+                            <div id="header_left">
+                                <center>
+                                    <p:graphicImage value="/resources/images/unify.png" title="UNIFY 2014" width="20%" />
+                                </center>
+                            </div>
+                      
+                            <div id="header_center">
+                                <center>    
+                                UNIFY 2014
+                            </center>
+                            </div>
+                            <div id="header_right">
+                             
+                            </div>
+                        </div>  
+                    </h:form>
+                   
+            </div>
+        <p:panel style="float:left;margin: 20px;">
+            <p:imageSwitch effect="fade" >  
+           
+        <ui:repeat value="#{anonBean.images}" var="image">  
+            <p:graphicImage value="/resources/images/unifyevents/#{image}" height="500px"/>  
+        </ui:repeat>  
+       </p:imageSwitch>  
+        </p:panel>
+        
+
+   
+    <p:panelGrid columns="3" style="float:right;margin: 20px;top:100px;border:none">
+               
+                <h:form>
+                <p:outputLabel for="username_id" value="Username"/>
+                <p:inputText id="username_id" value="#{login.username}" required="true" requiredMessage="This is a required field!">
+
+                </p:inputText>
+                <p:message for="username_id"/>
+                <p:outputLabel for="password_id" value="Password"/>
+                <p:password id="password_id" value="#{login.password}" required="true" requiredMessage="This is a required field!"/>
+                <p:message for="password_id"/>
+                
+                <p:commandButton value="Login" process="@form" action="#{login.loginUser()}" />
+                <p:commandButton value="Register Now!!" process="@this" onclick="regDialog.show()"/>
+                </h:form>
+                <p:dialog widgetVar="regDialog" header="Event Details" showEffect="clip" hideEffect="clip">  
+                                <h:panelGrid id="eventDetails" columns="2">  
+                                    <ui:include src="/secure/Login/register.xhtml"/>
+                                </h:panelGrid>  
+                    
+                </p:dialog> 
+                
+        </p:panelGrid>
+       
+    </h:body>
+</html>
+
